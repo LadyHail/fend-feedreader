@@ -77,27 +77,34 @@ $(function() {
 
             it('there is at least a single .entry element within .feed container', function(done) {
                 var entry = $('.entry');
+                var feedChildren = $('.feed').children();
                 expect(entry.length).not.toBe(0);
+                expect(feedChildren.length).not.toBe(0);
+                expect(feedChildren[0].querySelector('.entry').className).toBe('entry');
                 done();
             });
         });
 
         describe('New Feed Selection', function() {
-            var content = null;
+            var content1 = null;
+            var content2 = null;
 
         /* Test that ensures when a new feed is loaded by the loadFeed
          * function that the content actually changes.
          */
             beforeEach(function(done) {
-                content = $('.feed').html();
-                loadFeed(1, function() {
-                    done();
+                loadFeed(0, function() {
+                    content1 = $('.feed').html();
+
+                    loadFeed(1, function() {
+                        content2 = $('.feed').html();
+                        done();
+                    });
                 });
             });
 
             it('new feed is added to content', function(done) {
-                var newContent = $('.feed').html();
-                expect(content != newContent).toBe(true);
+                expect(content1 != content2).toBe(true);
                 done();
             });
         });
